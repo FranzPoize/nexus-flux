@@ -24,14 +24,27 @@
     "gulp-mocha": "^2.1.1",
     "gulp-plumber": "^1.0.1"
   },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "optional": [
+            "es7.classProperties",
+            "runtime"
+          ]
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "asap": "^2.0.3",
     "bluebird": "^2.9.30",
     "immutable": "^3.7.3",
-    "lifespan": "^5.0.1",
+    "lifespan": "FranzPoize/lifespan#master",
     "lodash": "^3.9.3",
-    "nexus-events": "^4.0.2",
-    "remutable": "^3.0.1",
+    "nexus-events": "FranzPoize/nexus-events#master",
+    "remutable": "FranzPoize/remutable#master",
     "sha256": "^0.2.0",
     "should": "^6.0.3"
   }
