@@ -4,7 +4,7 @@
   "description": "",
   "license": "MIT",
   "author": "Elie Rotenberg <elie@rotenberg.io>",
-  "main": "src/index.jsx",
+  "main": "dist/nexus-flux.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/elierotenberg/nexus-flux.git"
