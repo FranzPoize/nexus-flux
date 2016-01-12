@@ -1,11 +1,7 @@
-import Client from './Client';
 import Lifespan from 'lifespan';
 import Remutable from 'remutable';
-import Server from './Server';
+import { LocalClient, LocalServer } from './adapters/Local.jsx';
 
-export default {
-  Client,
-  Lifespan,
-  Remutable,
-  Server,
-};
+export var Client = LocalClient;
+export var Server = LocalServer;
+export {Lifespan, Remutable};

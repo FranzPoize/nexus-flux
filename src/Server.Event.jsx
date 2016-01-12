@@ -97,4 +97,4 @@ Event._ = {};
 Event.Update = Event._[Update.t()] = Update;
 Event.Delete = Event._[Delete.t()] = Delete;
 
-export default { Event };
+export { Event };

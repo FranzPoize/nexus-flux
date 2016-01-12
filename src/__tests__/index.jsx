@@ -3,7 +3,7 @@ import _ from 'lodash';
 import 'should';
 import Lifespan from 'lifespan';
 import Remutable from 'remutable';
-import { Client, Server } from '../adapters/Local';
+import { Client, Server } from '../../dist/nexus-flux.js';
 import hash from 'sha256';
 
 describe('Nexus Flux', function test() {

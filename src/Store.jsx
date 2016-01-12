@@ -2,7 +2,7 @@ import 'should';
 import _ from 'lodash';
 const __DEV__ = process.env.NODE_ENV === 'development';
 import asap from 'asap';
-import { EventEmitter } from 'nexus-events';
+import EventEmitter from 'nexus-events';
 import Lifespan from 'lifespan';
 import Remutable from 'remutable';
 const { Patch } = Remutable;
@@ -178,4 +178,4 @@ class Engine extends EventEmitter {
 
 _Engine = Engine;
 
-export default { Consumer, Producer, Engine };
+export { Consumer, Producer, Engine };

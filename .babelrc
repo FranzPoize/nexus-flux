@@ -1,0 +1,17 @@
+{
+	"presets": [
+		"es2015"
+	],
+	only: [
+		"nexus-flux"
+	],
+	"plugins": [
+		["transform-async-to-module-method", {
+			"module": "bluebird",
+			"method": "coroutine"
+		}],
+		"syntax-async-functions",
+		"transform-class-properties",
+		"transform-object-assign"
+	]
+}

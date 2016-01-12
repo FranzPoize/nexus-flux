@@ -115,4 +115,6 @@ Event.Subscribe = Event._[Subscribe.t()] = Subscribe;
 Event.Unsubscribe = Event._[Unsubscribe.t()] = Unsubscribe;
 Event.Action = Event._[Action.t()] = Action;
 
-export default { Event };
+export {
+	Event
+};

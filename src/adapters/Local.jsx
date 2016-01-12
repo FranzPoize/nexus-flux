@@ -1,7 +1,7 @@
 import 'should';
 const __DEV__ = process.env.NODE_ENV === 'development';
-import { Client, Server } from '../';
-const { Link } = Server;
+import Client from '../Client.jsx';
+import Server, {Link} from '../Server.jsx';
 import Promise from 'bluebird';
 
 let _LocalServer;
@@ -70,7 +70,4 @@ class LocalServer extends Server {
 
 _LocalServer = LocalServer;
 
-export default {
-  Client: LocalClient,
-  Server: LocalServer,
-};
+export { LocalClient, LocalServer};

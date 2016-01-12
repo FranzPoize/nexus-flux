@@ -46,7 +46,7 @@ class Client {
   // virtual
   sendToServer(ev) {
     if(__DEV__) {
-      ev.should.be.an.instanceOf(Client.Event);
+      ev.should.be.an.instanceOf(Event);
     }
     throw new TypeError('Virtual method invocation');
   }
@@ -129,12 +129,12 @@ class Client {
 
   receiveFromServer(ev) {
     if(__DEV__) {
-      ev.should.be.an.instanceOf(Server.Event);
+      ev.should.be.an.instanceOf(Event);
     }
-    if(ev instanceof Server.Event.Update) {
+    if(ev instanceof Event.Update) {
       return this._update(ev.path, ev.patch);
     }
-    if(ev instanceof Server.Event.Delete) {
+    if(ev instanceof Event.Delete) {
       return this._delete(ev.path);
     }
     throw new TypeError(`Unknown event: ${ev}`);
@@ -145,7 +145,7 @@ class Client {
       path.should.be.a.String;
     }
     if(this._stores[path] === void 0) {
-      this.sendToServer(new Client.Event.Subscribe({ path }));
+      this.sendToServer(new Event.Subscribe({ path }));
       const engine = new Store.Engine(this.getInjected(path) || void 0);
       this._stores[path] = {
         engine,
@@ -167,7 +167,7 @@ class Client {
     }
     this._stores[path].producer.lifespan.release();
     this._stores[path].engine.lifespan.release();
-    this.sendToServer(new Client.Event.Unsubscribe({ path }));
+    this.sendToServer(new Event.Unsubscribe({ path }));
     delete this._stores[path];
   }
 
@@ -193,7 +193,7 @@ class Client {
       path.should.be.a.String;
       params.should.be.an.Object;
     }
-    this.sendToServer(new Client.Event.Action({ path, params }));
+    this.sendToServer(new Event.Action({ path, params }));
   }
 
   forceResync() {
@@ -295,6 +295,5 @@ class Client {
   }
 }
 
-Object.assign(Client, { Event });
-
+export { Event };
 export default Client;
