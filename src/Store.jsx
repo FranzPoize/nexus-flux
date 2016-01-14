@@ -178,4 +178,4 @@ class Engine extends EventEmitter {
 
 _Engine = Engine;
 
-export { Consumer, Producer, Engine };
+export default { Consumer, Producer, Engine };

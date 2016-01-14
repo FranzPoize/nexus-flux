@@ -7,7 +7,7 @@ const { Patch } = Remutable;
 import Lifespan from 'lifespan';
 import Store from './Store';
 // we just need this reference for typechecks
-import Server from './Server.Event';
+import Server from './Server';
 import { Event } from './Client.Event';
 
 // abstract
@@ -129,12 +129,12 @@ class Client {
 
   receiveFromServer(ev) {
     if(__DEV__) {
-      ev.should.be.an.instanceOf(Event);
+      ev.should.be.an.instanceOf(Server.Event);
     }
-    if(ev instanceof Event.Update) {
+    if(ev instanceof Server.Event.Update) {
       return this._update(ev.path, ev.patch);
     }
-    if(ev instanceof Event.Delete) {
+    if(ev instanceof Server.Event.Delete) {
       return this._delete(ev.path);
     }
     throw new TypeError(`Unknown event: ${ev}`);
@@ -294,6 +294,7 @@ class Client {
     producer.apply(squash);
   }
 }
+Object.assign( Client, { Event });
 
 export { Event };
 export default Client;

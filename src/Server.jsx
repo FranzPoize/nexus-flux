@@ -5,7 +5,7 @@ import Remutable from 'remutable';
 import Lifespan from 'lifespan';
 import EventEmitter from 'nexus-events';
 // we just need this reference for typechecks
-import Client from './Client.Event';
+import Client from './Client';
 import { Event } from './Server.Event';
 import Promise from 'bluebird';
 
@@ -149,7 +149,7 @@ class Server extends EventEmitter {
       this._links.should.have.property(linkID);
       ev.should.be.an.instanceOf(Client.Event);
     }
-    if(ev instanceof Event.Subscribe) {
+    if(ev instanceof Client.Event.Subscribe) {
       return this.subscribe(linkID, ev.path);
     }
     if(ev instanceof Client.Event.Unsubscribe) {
@@ -165,6 +165,8 @@ class Server extends EventEmitter {
 }
 
 _Server = Server;
+
+Object.assign( Server, { Event, Link });
 
 export { Event, Link };
 export default Server;

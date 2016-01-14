@@ -30,7 +30,7 @@ class LocalClient extends Client {
   // ignore hash
   fetch(path) {
     // fail if there is not such published path
-    return Promise.try(() => {
+	  return Promise.try(() => {
       this._server.stores.should.have.property(path);
       return this._server.stores[path];
     });

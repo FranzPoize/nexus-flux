@@ -29,7 +29,7 @@ describe('Nexus Flux', function test() {
       const todoList = stores['/todoList'] = new Remutable({});
 
       // update clock every 500ms
-      server.lifespan.setInterval(() => {
+	  server.lifespan.setInterval(() => {
         server.dispatchUpdate('/clock', clock.set('date', Date.now()).commit());
       }, 500);
 
@@ -70,7 +70,7 @@ describe('Nexus Flux', function test() {
       // subscribe to a store
       client.getStore('/clock', client.lifespan)
       // every time its updated (including when its first fetched), display the modified value (it is an Immutable.Map)
-      .onUpdate(({ head }) => {
+	  .onUpdate(({ head }) => {
         console.log('clock tick', head.get('date'));
       })
       // if its deleted, then do something appropriate
@@ -98,12 +98,14 @@ describe('Nexus Flux', function test() {
       client.dispatchAction('/addItem', { name: 'Better', description: 'Code better', ownerKey });
       client.lifespan
       // add a new item in 1000ms
-      .setTimeout(() =>
-        client.dispatchAction('/addItem', { name: 'Faster', description: 'Code Faster', ownerKey })
+	  .setTimeout(() => {
+		  client.dispatchAction('/addItem', { name: 'Faster', description: 'Code Faster', ownerKey })
+	  }
       , 1000)
       // remove an item in 2000ms
-      .setTimeout(() =>
-        client.dispatchAction('/removeItem', { name: 'Harder', ownerKey })
+      .setTimeout(() => {
+		  client.dispatchAction('/removeItem', { name: 'Harder', ownerKey })
+	  }
       , 2000)
       // add an item in 3000ms
       .setTimeout(() =>
