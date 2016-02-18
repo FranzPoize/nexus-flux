@@ -1,7 +1,7 @@
 import 'should';
 const __DEV__ = process.env.NODE_ENV === 'development';
-import Client from '../Client.jsx';
-import Server, {Link} from '../Server.jsx';
+import Client from '../Client';
+import Server, {Link} from '../Server';
 import Promise from 'bluebird';
 
 let _LocalServer;
@@ -58,13 +58,13 @@ class LocalLink extends Link {
 _LocalLink = LocalLink;
 
 class LocalServer extends Server {
-  constructor(stores = {}) {
+  constructor(stores = {}, debugInfo = {}) {
     if(__DEV__) {
       stores.should.be.an.Object;
     }
-    super();
+    super(debugInfo);
     this.stores = stores;
-    this.lifespan.onRelease(() => this.stores = null);
+	this.lifespan.onRelease(() => this.stores = null);
   }
 }
 

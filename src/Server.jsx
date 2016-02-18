@@ -55,7 +55,7 @@ class Link {
 }
 
 class Server extends EventEmitter {
-  constructor() {
+  constructor({debugPath, logStore}) {
     super();
     this.lifespan = new Lifespan();
     this._links = {};
@@ -67,7 +67,9 @@ class Server extends EventEmitter {
       });
       this._links = null;
       this._subscriptions = null;
-    });
+	});
+	this.debugPath = debugPath;
+	this.logStore = logStore;
   }
 
   dispatchAction(path, params) {
@@ -76,7 +78,21 @@ class Server extends EventEmitter {
         path.should.be.a.String;
         params.should.be.an.Object;
       }
-      this.emit('action', { path, params });
+      if (this.logStore && !_.contains(this.debugPath, path)) {
+        const patchArray = _.clone(this.logStore.get('patchArray'));
+        patchArray.push({
+          path,
+          params,
+          type: 'action',
+        });
+        const logPatch = this.logStore.set('patchArray', patchArray).commit();
+        const logEv = new Server.Event.Update({path: 'logStore', patch: logPatch});
+        _.each(this._subscriptions.logStore, (link) => {
+          link.receiveFromServer(logEv);
+        });
+      }
+	  this.emit('action', { path, params });
+	  return null;
     });
   }
 
@@ -85,7 +101,21 @@ class Server extends EventEmitter {
       path.should.be.a.String;
       patch.should.be.an.instanceOf(Remutable.Patch);
     }
+    if (this.logStore && !_.contains(this.debugPath, path)) {
+      const patchArray = _.clone(this.logStore.get('patchArray'));
+      patchArray.push({
+        path,
+        patch,
+        type: 'patch',
+      });
+      const logPatch = this.logStore.set('patchArray', patchArray).commit();
+      const logEv = new Server.Event.Update({path: 'logStore', patch: logPatch});
+      _.each(this._subscriptions.logStore, (link) => {
+        link.receiveFromServer(logEv);
+      });
+    }
     if(this._subscriptions[path] !== void 0) {
+
       const ev = new Server.Event.Update({ path, patch });
       _.each(this._subscriptions[path], (link) => {
         link.receiveFromServer(ev);
