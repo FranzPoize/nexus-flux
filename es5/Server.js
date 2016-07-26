@@ -153,7 +153,7 @@ var Server = function (_EventEmitter) {
           path.should.be.a.String;
           params.should.be.an.Object;
         }
-        if (_this3.logStore && !_lodash2.default.contains(_this3.debugPath, path)) {
+        if (_this3.logStore && !_lodash2.default.includes(_this3.debugPath, path)) {
           (function () {
             var patchArray = _lodash2.default.clone(_this3.logStore.get('patchArray'));
             patchArray.push({
@@ -181,7 +181,7 @@ var Server = function (_EventEmitter) {
         path.should.be.a.String;
         patch.should.be.an.instanceOf(_remutable2.default.Patch);
       }
-      if (this.logStore && !_lodash2.default.contains(this.debugPath, path)) {
+      if (this.logStore && !_lodash2.default.includes(this.debugPath, path)) {
         (function () {
           var patchArray = _lodash2.default.clone(_this4.logStore.get('patchArray'));
           patchArray.push({

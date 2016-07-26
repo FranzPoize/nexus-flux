@@ -78,7 +78,7 @@ class Server extends EventEmitter {
         path.should.be.a.String;
         params.should.be.an.Object;
       }
-      if (this.logStore && !_.contains(this.debugPath, path)) {
+      if (this.logStore && !_.includes(this.debugPath, path)) {
         const patchArray = _.clone(this.logStore.get('patchArray'));
         patchArray.push({
           path,
@@ -101,7 +101,7 @@ class Server extends EventEmitter {
       path.should.be.a.String;
       patch.should.be.an.instanceOf(Remutable.Patch);
     }
-    if (this.logStore && !_.contains(this.debugPath, path)) {
+    if (this.logStore && !_.includes(this.debugPath, path)) {
       const patchArray = _.clone(this.logStore.get('patchArray'));
       patchArray.push({
         path,
