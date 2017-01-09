@@ -31,7 +31,9 @@ class LocalClient extends Client {
   fetch(path) {
     // fail if there is not such published path
 	  return Promise.try(() => {
-      this._server.stores.should.have.property(path);
+      if (!this._server.stores.path) {
+        throw new Error();
+      }
       return this._server.stores[path];
     });
   }
