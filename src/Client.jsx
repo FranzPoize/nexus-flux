@@ -1,5 +1,7 @@
 import 'should';
-import _ from 'lodash';
+import _each from 'lodash/each';
+import _isNumber from 'lodash/isNumber';
+import _mapValues from 'lodash/mapValues';
 const __DEV__ = process.env.NODE_ENV === 'development';
 import Immutable from 'immutable';
 import Remutable from 'remutable';
@@ -38,7 +40,7 @@ class Client {
   fetch(path, hash) {
     if(__DEV__) {
       path.should.be.a.String;
-      (hash === null || _.isNumber(hash)).should.be.true;
+      (hash === null || _isNumber(hash)).should.be.true;
     }
     throw new TypeError('Virtual method invocation');
   }
@@ -77,7 +79,7 @@ class Client {
       this.isPrefetching.should.be.true;
     }
     const prefetched = this._prefetched;
-    return _.mapValues(prefetched, ({ head }) => (head ? head.toJS() : void 0));
+    return _mapValues(prefetched, ({ head }) => (head ? head.toJS() : void 0));
   }
 
   prefetch(path) {
@@ -117,7 +119,7 @@ class Client {
       this.isInjecting.should.not.be.true;
       injected.should.be.an.Object;
     }
-    this._injected = _.mapValues(injected, (js) => new Immutable.Map(js));
+    this._injected = _mapValues(injected, (js) => new Immutable.Map(js));
   }
 
   stopInjecting() {
@@ -246,7 +248,7 @@ class Client {
   _refetch(path, hash, { forceResync = false } = {}) {
     if(__DEV__) {
       path.should.be.a.String;
-      (hash === null || _.isNumber(hash)).should.be.true;
+      (hash === null || _isNumber(hash)).should.be.true;
       this._stores.should.have.property(path);
     }
     this._stores[path].refetching = true;
@@ -286,7 +288,7 @@ class Client {
     }
     const version = squash.to.v;
     // clean old patches
-    _.each((patches), ({ to }, source) => {
+    _each((patches), ({ to }, source) => {
       if(to.v <= version) {
         delete patches[source];
       }

@@ -1,5 +1,5 @@
 import 'should';
-import _ from 'lodash';
+import _bindAll from 'lodash/bindAll';
 const __DEV__ = process.env.NODE_ENV === 'development';
 import asap from 'asap';
 import EventEmitter from 'nexus-events';
@@ -20,7 +20,7 @@ class Producer {
       _engine: engine,
       lifespan: new Lifespan(),
     });
-    _.bindAll(this, [
+    _bindAll(this, [
       'get',
       'unset',
       'set',
@@ -69,7 +69,7 @@ class Consumer {
       _engine: engine,
       lifespan: new Lifespan(),
     });
-    _.bindAll(this, [
+    _bindAll(this, [
       'onUpdate',
       'onDelete',
     ]);
@@ -122,7 +122,7 @@ class Engine extends EventEmitter {
     super();
     this.lifespan = new Lifespan();
     this.remutable = new Remutable(data);
-    _.bindAll(this, [
+    _bindAll(this, [
       'createProducer',
       'createConsumer',
       'apply',

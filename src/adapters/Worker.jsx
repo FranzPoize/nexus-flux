@@ -1,5 +1,6 @@
 import 'should';
-import _ from 'lodash';
+import _each from 'lodash/each';
+import _isObject from 'lodash/isObject';
 const __DEV__ = process.env.NODE_ENV === 'development';
 import { Client, Server } from '../';
 const { Link } = Server;
@@ -30,7 +31,7 @@ class WorkerClient extends Client {
     this._fetching = {};
     this._worker.addEventListener('message', this.receiveFromWorker);
     this.lifespan.onRelease(() => {
-      _.each(this._fetching, ({ reject }) => reject(new Error('Client released')));
+      _each(this._fetching, ({ reject }) => reject(new Error('Client released')));
       this._worker.removeEventListener('message', this.receiveFromWorker);
     });
   }
@@ -84,7 +85,7 @@ class WorkerClient extends Client {
   }
 
   receiveFromWorker(message) {
-    if(_.isObject(message) && message[this._salt] !== void 0) {
+    if(_isObject(message) && message[this._salt] !== void 0) {
       const { t, j } = message[this._salt];
       if(t === PUBLISH) {
         return this._receivePublish(j);
@@ -145,7 +146,7 @@ class WorkerLink extends Link {
   }
 
   receiveFromWorker(message) {
-    if(_.isObject(message) && message[this._salt] !== void 0) {
+    if(_isObject(message) && message[this._salt] !== void 0) {
       const { t, j } = message[this._salt];
       if(t === EVENT) {
         return this._receivePublish(j);

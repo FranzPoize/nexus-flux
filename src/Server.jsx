@@ -1,5 +1,9 @@
 import 'should';
-import _ from 'lodash';
+import _each from 'lodash/each';
+import _includes from 'lodash/includes';
+import _clone from 'lodash/clone';
+import _size from 'lodash/size';
+import _uniqueId from 'lodash/uniqueId';
 const __DEV__ = process.env.NODE_ENV === 'development';
 import Remutable from 'remutable';
 import Lifespan from 'lifespan';
@@ -61,8 +65,8 @@ class Server extends EventEmitter {
     this._links = {};
     this._subscriptions = {};
     this.lifespan.onRelease(() => {
-      _.each(this._links, ({ link, subscriptions }, linkID) => {
-        _.each(subscriptions, (path) => this.unsubscribe(linkID, path));
+      _each(this._links, ({ link, subscriptions }, linkID) => {
+        _each(subscriptions, (path) => this.unsubscribe(linkID, path));
         link.lifespan.release();
       });
       this._links = null;
@@ -78,8 +82,8 @@ class Server extends EventEmitter {
         path.should.be.a.String;
         params.should.be.an.Object;
       }
-      if (this.logStore && !_.includes(this.debugPath, path)) {
-        const patchArray = _.clone(this.logStore.get('patchArray'));
+      if (this.logStore && !_includes(this.debugPath, path)) {
+        const patchArray = _clone(this.logStore.get('patchArray'));
         patchArray.push({
           path,
           params,
@@ -87,7 +91,7 @@ class Server extends EventEmitter {
         });
         const logPatch = this.logStore.set('patchArray', patchArray).commit();
         const logEv = new Server.Event.Update({path: 'logStore', patch: logPatch});
-        _.each(this._subscriptions.logStore, (link) => {
+        _each(this._subscriptions.logStore, (link) => {
           link.receiveFromServer(logEv);
         });
       }
@@ -101,8 +105,8 @@ class Server extends EventEmitter {
       path.should.be.a.String;
       patch.should.be.an.instanceOf(Remutable.Patch);
     }
-    if (this.logStore && !_.includes(this.debugPath, path)) {
-      const patchArray = _.clone(this.logStore.get('patchArray'));
+    if (this.logStore && !_includes(this.debugPath, path)) {
+      const patchArray = _clone(this.logStore.get('patchArray'));
       patchArray.push({
         path,
         patch,
@@ -110,14 +114,14 @@ class Server extends EventEmitter {
       });
       const logPatch = this.logStore.set('patchArray', patchArray).commit();
       const logEv = new Server.Event.Update({path: 'logStore', patch: logPatch});
-      _.each(this._subscriptions.logStore, (link) => {
+      _each(this._subscriptions.logStore, (link) => {
         link.receiveFromServer(logEv);
       });
     }
     if(this._subscriptions[path] !== void 0) {
 
       const ev = new Server.Event.Update({ path, patch });
-      _.each(this._subscriptions[path], (link) => {
+      _each(this._subscriptions[path], (link) => {
         link.receiveFromServer(ev);
       });
     }
@@ -151,7 +155,7 @@ class Server extends EventEmitter {
     }
     delete this._links[linkID].subscriptions[path];
     delete this._subscriptions[path][linkID];
-    if(_.size(this._subscriptions[path]) === 0) {
+    if(_size(this._subscriptions[path]) === 0) {
       delete this._subscriptions[path];
     }
   }
@@ -161,14 +165,14 @@ class Server extends EventEmitter {
       link.should.be.an.instanceOf(Link);
     }
 
-    const linkID = _.uniqueId();
+    const linkID = _uniqueId();
     this._links[linkID] = {
       link,
       subscriptions: {},
     };
     link.acceptFromServer((ev) => this.receiveFromLink(linkID, ev));
     link.lifespan.onRelease(() => {
-      _.each(this._links[linkID].subscriptions, (path) => this.unsubscribe(linkID, path));
+      _each(this._links[linkID].subscriptions, (path) => this.unsubscribe(linkID, path));
       delete this._links[linkID];
     });
   }
