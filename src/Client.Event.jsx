@@ -1,9 +1,8 @@
 import 'should';
-const __DEV__ = process.env.NODE_ENV === 'development';
 
 class Event {
   constructor() {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this.should.have.property('_toJS').which.is.a.Function;
       this.constructor.should.have.property('fromJS').which.is.a.Function;
       this.constructor.should.have.property('t').which.is.a.Function;
@@ -39,7 +38,7 @@ class Event {
 
 class Subscribe extends Event {
   constructor({ path }) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     super();
@@ -61,7 +60,7 @@ class Subscribe extends Event {
 
 class Unsubscribe extends Event {
   constructor({ path }) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     super();
@@ -83,7 +82,7 @@ class Unsubscribe extends Event {
 
 class Action extends Event {
   constructor({ path, params }) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       params.should.be.an.Object;
     }

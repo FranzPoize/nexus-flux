@@ -16,9 +16,6 @@ import _includes from 'lodash/includes';
 import _clone from 'lodash/clone';
 import _size from 'lodash/size';
 import _uniqueId from 'lodash/uniqueId';
-
-var __DEV__ = process.env.NODE_ENV === 'development';
-
 import Remutable from 'remutable';
 import Lifespan from 'lifespan';
 import EventEmitter from 'nexus-events'; // we just need this reference for typechecks
@@ -38,7 +35,7 @@ function () {
 
     _classCallCheck(this, Link);
 
-    if (__DEV__) {
+    if (false) {
       // ensure abstracts
       this.constructor.should.not.be.exactly(Link); // ensure virtual
 
@@ -58,7 +55,7 @@ function () {
   _createClass(Link, [{
     key: "sendToClient",
     value: function sendToClient(ev) {
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(_Server.Event);
       }
 
@@ -68,7 +65,7 @@ function () {
   }, {
     key: "acceptFromServer",
     value: function acceptFromServer(receiveFromClient) {
-      if (__DEV__) {
+      if (false) {
         receiveFromClient.should.be.a.Function;
       }
 
@@ -78,7 +75,7 @@ function () {
   }, {
     key: "receiveFromServer",
     value: function receiveFromServer(ev) {
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(_Server.Event);
       }
 
@@ -134,7 +131,7 @@ function (_EventEmitter) {
       var _this3 = this;
 
       return Promise.try(function () {
-        if (__DEV__) {
+        if (false) {
           path.should.be.a.String;
           params.should.be.an.Object;
         }
@@ -171,7 +168,7 @@ function (_EventEmitter) {
   }, {
     key: "dispatchUpdate",
     value: function dispatchUpdate(path, patch) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         patch.should.be.an.instanceOf(Remutable.Patch);
       }
@@ -211,7 +208,7 @@ function (_EventEmitter) {
   }, {
     key: "subscribe",
     value: function subscribe(linkID, path) {
-      if (__DEV__) {
+      if (false) {
         linkID.should.be.a.String;
         path.should.be.a.String;
 
@@ -233,7 +230,7 @@ function (_EventEmitter) {
   }, {
     key: "unsubscribe",
     value: function unsubscribe(linkID, path) {
-      if (__DEV__) {
+      if (false) {
         linkID.should.be.a.String;
         path.should.be.a.String;
 
@@ -258,7 +255,7 @@ function (_EventEmitter) {
     value: function acceptLink(link) {
       var _this4 = this;
 
-      if (__DEV__) {
+      if (false) {
         link.should.be.an.instanceOf(Link);
       }
 
@@ -282,7 +279,7 @@ function (_EventEmitter) {
   }, {
     key: "receiveFromLink",
     value: function receiveFromLink(linkID, ev) {
-      if (__DEV__) {
+      if (false) {
         linkID.should.be.a.String;
 
         this._links.should.have.property(linkID);
@@ -302,7 +299,7 @@ function (_EventEmitter) {
         return this.dispatchAction(ev.path, ev.params);
       }
 
-      if (__DEV__) {
+      if (false) {
         throw new TypeError("Unknown Client.Event: ".concat(ev));
       }
     }

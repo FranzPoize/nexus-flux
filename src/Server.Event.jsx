@@ -1,10 +1,9 @@
 import 'should';
-const __DEV__ = process.env.NODE_ENV === 'development';
 import { Patch } from 'remutable';
 
 class Event {
   constructor() {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this.should.have.property('_toJS').which.is.a.Function;
       this.constructor.should.have.property('fromJS').which.is.a.Function;
       this.constructor.should.have.property('t').which.is.a.Function;
@@ -40,7 +39,7 @@ class Event {
 
 class Update extends Event {
   constructor({ path, patch }) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       patch.should.be.an.instanceOf(Patch);
     }
@@ -60,7 +59,7 @@ class Update extends Event {
   }
 
   static fromJS({ p, u }) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       p.should.be.a.String;
       u.should.be.an.Object;
     }
@@ -70,7 +69,7 @@ class Update extends Event {
 
 class Delete extends Event {
   constructor({ path }) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     super();
@@ -86,7 +85,7 @@ class Delete extends Event {
   }
 
   static fromJS({ p }) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       p.should.be.a.String;
     }
     return new Delete({ path: p });

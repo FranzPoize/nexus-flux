@@ -1,5 +1,4 @@
 import 'should';
-const __DEV__ = process.env.NODE_ENV === 'development';
 import Client from '../Client';
 import Server, {Link} from '../Server';
 import Promise from 'bluebird';
@@ -9,7 +8,7 @@ let _LocalLink;
 
 class LocalClient extends Client {
   constructor(server) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       server.should.be.an.instanceOf(_LocalServer);
     }
     super();
@@ -31,7 +30,7 @@ class LocalClient extends Client {
   fetch(path) {
     // fail if there is not such published path
 	  return Promise.try(() => {
-      if (!this._server.stores.path) {
+      if (!this._server.stores[path]) {
         throw new Error();
       }
       return this._server.stores[path];
@@ -41,7 +40,7 @@ class LocalClient extends Client {
 
 class LocalLink extends Link {
   constructor(client) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       client.should.be.an.instanceOf(LocalClient);
     }
     super();
@@ -61,7 +60,7 @@ _LocalLink = LocalLink;
 
 class LocalServer extends Server {
   constructor(stores = {}, debugInfo = {}) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       stores.should.be.an.Object;
     }
     super(debugInfo);

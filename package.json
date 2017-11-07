@@ -36,6 +36,8 @@
   "dependencies": {
     "@babel/preset-react": "^7.0.0-beta.31",
     "asap": "^2.0.3",
+    "babel-plugin-transform-node-env-inline": "^0.2.0",
+    "babel-plugin-uglify": "^1.0.2",
     "immutable": "^3.7.3",
     "lifespan": "franzpoize/lifespan#master",
     "lodash": "^4.14.0",

@@ -12,9 +12,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 import 'should';
 import _bindAll from 'lodash/bindAll';
-
-var __DEV__ = process.env.NODE_ENV === 'development';
-
 import asap from 'asap';
 import EventEmitter from 'nexus-events';
 import Lifespan from 'lifespan';
@@ -35,7 +32,7 @@ function () {
 
     _classCallCheck(this, Producer);
 
-    if (__DEV__) {
+    if (false) {
       engine.should.be.an.instanceOf(_Engine);
     }
 
@@ -68,7 +65,7 @@ function () {
   _createClass(Producer, [{
     key: "get",
     value: function get(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
       }
 
@@ -77,7 +74,7 @@ function () {
   }, {
     key: "unset",
     value: function unset(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
       }
 
@@ -104,7 +101,7 @@ function () {
 
     _classCallCheck(this, Consumer);
 
-    if (__DEV__) {
+    if (false) {
       engine.should.be.an.instanceOf(_Engine);
     }
 
@@ -115,7 +112,7 @@ function () {
 
     _bindAll(this, ['onUpdate', 'onDelete']);
 
-    if (__DEV__) {
+    if (false) {
       this._onUpdateHandlers = 0;
       this._onDeleteHandlers = 0; // check that handlers are immediatly set
 
@@ -134,13 +131,13 @@ function () {
   _createClass(Consumer, [{
     key: "onUpdate",
     value: function onUpdate(fn) {
-      if (__DEV__) {
+      if (false) {
         fn.should.be.a.Function;
       }
 
       this._engine.addListener(EVENTS.UPDATE, fn, this.lifespan);
 
-      if (__DEV__) {
+      if (false) {
         this._onUpdateHandlers = this._onUpdateHandlers + 1;
       }
 
@@ -149,13 +146,13 @@ function () {
   }, {
     key: "onDelete",
     value: function onDelete(fn) {
-      if (__DEV__) {
+      if (false) {
         fn.should.be.a.Function;
       }
 
       this._engine.addListener(EVENTS.DELETE, fn, this.lifespan);
 
-      if (__DEV__) {
+      if (false) {
         this._onDeleteHandlers = this._onDeleteHandlers + 1;
       }
 
@@ -195,7 +192,7 @@ function (_EventEmitter) {
     _this3.producers = 0;
 
     _this3.lifespan.onRelease(function () {
-      if (__DEV__) {
+      if (false) {
         _this3.consumers.should.be.exactly(0);
 
         _this3.producers.should.be.exactly(0);
@@ -236,7 +233,7 @@ function (_EventEmitter) {
   }, {
     key: "apply",
     value: function apply(patch) {
-      if (__DEV__) {
+      if (false) {
         patch.should.be.an.instanceOf(Patch);
       }
 

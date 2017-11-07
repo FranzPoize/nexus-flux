@@ -15,9 +15,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import 'should';
 import _each from 'lodash/each';
 import _isObject from 'lodash/isObject';
-
-var __DEV__ = process.env.NODE_ENV === 'development';
-
 import { Client, Server } from '../';
 var Link = Server.Link;
 import Remutable from 'remutable'; // constants for the communication 'protocol'/convention
@@ -45,7 +42,7 @@ function (_Client) {
 
     _classCallCheck(this, WorkerClient);
 
-    if (__DEV__) {
+    if (false) {
       worker.should.be.an.instanceOf(window.Worker);
       salt.should.be.a.String;
     }
@@ -99,7 +96,7 @@ function (_Client) {
   }, {
     key: "sendToServer",
     value: function sendToServer(ev) {
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(Client.Event);
       }
 
@@ -113,7 +110,7 @@ function (_Client) {
     value: function _receivePublish(j) {
       var path = j.path;
 
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
       }
 
@@ -134,7 +131,7 @@ function (_Client) {
     value: function _receiveEvent(j) {
       var ev = Server.Event.fromJS(j);
 
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(Server.Event);
       }
 
@@ -180,7 +177,7 @@ function (_Link) {
 
     _classCallCheck(this, WorkerLink);
 
-    if (__DEV__) {
+    if (false) {
       self.should.be.an.Object;
       self.postMessage.should.be.a.Function;
       self.addEventListener.should.be.a.Function;
@@ -208,7 +205,7 @@ function (_Link) {
   _createClass(WorkerLink, [{
     key: "sendToClient",
     value: function sendToClient(ev) {
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(Server.Event);
       }
 
@@ -222,7 +219,7 @@ function (_Link) {
     value: function _receivePublish(j) {
       var ev = Client.Event.fromJS(j);
 
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(Client.Event);
         return this.receiveFromClient(ev);
       }
@@ -287,7 +284,7 @@ function (_Server) {
 
     _classCallCheck(this, WorkerServer);
 
-    if (__DEV__) {
+    if (false) {
       stores.should.be.an.Object;
       salt.should.be.a.String;
     }

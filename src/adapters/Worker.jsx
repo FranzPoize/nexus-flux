@@ -1,7 +1,6 @@
 import 'should';
 import _each from 'lodash/each';
 import _isObject from 'lodash/isObject';
-const __DEV__ = process.env.NODE_ENV === 'development';
 import { Client, Server } from '../';
 const { Link } = Server;
 import Remutable from 'remutable';
@@ -21,7 +20,7 @@ const DEFAULT_SALT = '__KqsrQBNHfkTYQ8mWadEDwfKM';
 /* jshint browser:true */
 class WorkerClient extends Client {
   constructor(worker, salt = DEFAULT_SALT) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       worker.should.be.an.instanceOf(window.Worker);
       salt.should.be.a.String;
     }
@@ -53,7 +52,7 @@ class WorkerClient extends Client {
   }
 
   sendToServer(ev) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(Client.Event);
     }
     this._worker.postMessage({ [this._salt]: { t: EVENT, js: ev.toJS() } });
@@ -61,7 +60,7 @@ class WorkerClient extends Client {
 
   _receivePublish(j) {
     const { path } = j;
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     if(this._fetching[path] !== void 0) {
@@ -78,7 +77,7 @@ class WorkerClient extends Client {
 
   _receiveEvent(j) {
     const ev = Server.Event.fromJS(j);
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(Server.Event);
     }
     return this.receiveFromServer(ev);
@@ -102,7 +101,7 @@ class WorkerClient extends Client {
 /* jshint worker:true */
 class WorkerLink extends Link {
   constructor(self, stores, salt = DEFAULT_SALT) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       self.should.be.an.Object;
       self.postMessage.should.be.a.Function;
       self.addEventListener.should.be.a.Function;
@@ -122,7 +121,7 @@ class WorkerLink extends Link {
   }
 
   sendToClient(ev) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(Server.Event);
     }
     this._self.postMessage({ [this._salt]: { t: EVENT, js: ev.toJS() } });
@@ -130,7 +129,7 @@ class WorkerLink extends Link {
 
   _receivePublish(j) {
     const ev = Client.Event.fromJS(j);
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(Client.Event);
       return this.receiveFromClient(ev);
     }
@@ -163,7 +162,7 @@ class WorkerLink extends Link {
 /* jshint worker:true */
 class WorkerServer extends Server {
   constructor(stores = {}, salt = DEFAULT_SALT) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       stores.should.be.an.Object;
       salt.should.be.a.String;
     }

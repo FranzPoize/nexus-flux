@@ -11,9 +11,6 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import 'should';
-
-var __DEV__ = process.env.NODE_ENV === 'development';
-
 import Client from '../Client';
 import Server, { Link } from '../Server';
 import Promise from 'bluebird';
@@ -32,7 +29,7 @@ function (_Client) {
 
     _classCallCheck(this, LocalClient);
 
-    if (__DEV__) {
+    if (false) {
       server.should.be.an.instanceOf(_LocalServer);
     }
 
@@ -65,7 +62,7 @@ function (_Client) {
 
       // fail if there is not such published path
       return Promise.try(function () {
-        if (!_this2._server.stores.path) {
+        if (!_this2._server.stores[path]) {
           throw new Error();
         }
 
@@ -87,7 +84,7 @@ function (_Link) {
 
     _classCallCheck(this, LocalLink);
 
-    if (__DEV__) {
+    if (false) {
       client.should.be.an.instanceOf(LocalClient);
     }
 
@@ -127,7 +124,7 @@ function (_Server) {
 
     _classCallCheck(this, LocalServer);
 
-    if (__DEV__) {
+    if (false) {
       stores.should.be.an.Object;
     }
 

@@ -8,9 +8,6 @@ import 'should';
 import _each from 'lodash/each';
 import _isNumber from 'lodash/isNumber';
 import _mapValues from 'lodash/mapValues';
-
-var __DEV__ = process.env.NODE_ENV === 'development';
-
 import Immutable from 'immutable';
 import Remutable from 'remutable';
 var Patch = Remutable.Patch;
@@ -28,7 +25,7 @@ function () {
 
     _classCallCheck(this, Client);
 
-    if (__DEV__) {
+    if (false) {
       // ensure abstract
       this.constructor.should.not.be.exactly(Client); // ensure virtual
 
@@ -54,7 +51,7 @@ function () {
   _createClass(Client, [{
     key: "fetch",
     value: function fetch(path, hash) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         (hash === null || _isNumber(hash)).should.be.true;
       }
@@ -65,7 +62,7 @@ function () {
   }, {
     key: "sendToServer",
     value: function sendToServer(ev) {
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(Event);
       }
 
@@ -74,7 +71,7 @@ function () {
   }, {
     key: "getPrefetched",
     value: function getPrefetched(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         this.isPrefetching.should.be.true;
 
@@ -88,7 +85,7 @@ function () {
   }, {
     key: "startPrefetching",
     value: function startPrefetching() {
-      if (__DEV__) {
+      if (false) {
         this.isPrefetching.should.not.be.true;
       }
 
@@ -97,7 +94,7 @@ function () {
   }, {
     key: "stopPrefetching",
     value: function stopPrefetching() {
-      if (__DEV__) {
+      if (false) {
         this.isPrefetching.should.be.true;
       }
 
@@ -110,7 +107,7 @@ function () {
   }, {
     key: "prefetch",
     value: function prefetch(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         this.isPrefetching.should.be.true;
       }
@@ -134,7 +131,7 @@ function () {
   }, {
     key: "getInjected",
     value: function getInjected(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
       }
 
@@ -147,7 +144,7 @@ function () {
   }, {
     key: "startInjecting",
     value: function startInjecting(injected) {
-      if (__DEV__) {
+      if (false) {
         this.isInjecting.should.not.be.true;
         injected.should.be.an.Object;
       }
@@ -159,7 +156,7 @@ function () {
   }, {
     key: "stopInjecting",
     value: function stopInjecting() {
-      if (__DEV__) {
+      if (false) {
         this.isInjecting.should.be.true;
       }
 
@@ -168,7 +165,7 @@ function () {
   }, {
     key: "receiveFromServer",
     value: function receiveFromServer(ev) {
-      if (__DEV__) {
+      if (false) {
         ev.should.be.an.instanceOf(Server.Event);
       }
 
@@ -185,7 +182,7 @@ function () {
   }, {
     key: "findOrCreateStore",
     value: function findOrCreateStore(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
       }
 
@@ -210,7 +207,7 @@ function () {
   }, {
     key: "deleteStore",
     value: function deleteStore(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
 
         this._stores.should.have.property(path);
@@ -233,7 +230,7 @@ function () {
     value: function getStore(path, lifespan) {
       var _this2 = this;
 
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         lifespan.should.be.an.instanceOf(Lifespan);
       }
@@ -255,7 +252,7 @@ function () {
     value: function dispatchAction(path) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         params.should.be.an.Object;
       }
@@ -287,7 +284,7 @@ function () {
   }, {
     key: "_update",
     value: function _update(path, patch) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         patch.should.be.an.instanceOf(Patch);
       } // dismiss if we are not interested anymore
@@ -321,7 +318,7 @@ function () {
   }, {
     key: "_delete",
     value: function _delete(path) {
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
       }
 
@@ -341,7 +338,7 @@ function () {
           _ref3$forceResync = _ref3.forceResync,
           forceResync = _ref3$forceResync === void 0 ? false : _ref3$forceResync;
 
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         (hash === null || _isNumber(hash)).should.be.true;
 
@@ -356,7 +353,7 @@ function () {
           return;
         }
 
-        if (__DEV__) {
+        if (false) {
           _this4._stores[path].refetching.should.be.true;
         }
 
@@ -374,7 +371,7 @@ function () {
           _ref4$forceResync = _ref4.forceResync,
           forceResync = _ref4$forceResync === void 0 ? false : _ref4$forceResync;
 
-      if (__DEV__) {
+      if (false) {
         path.should.be.a.String;
         (next instanceof Remutable || next instanceof Remutable.Consumer).should.be.true;
       } // if we are not interested anymore, then dismiss

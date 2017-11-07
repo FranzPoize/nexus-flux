@@ -12,15 +12,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 import 'should';
 
-var __DEV__ = process.env.NODE_ENV === 'development';
-
 var Event =
 /*#__PURE__*/
 function () {
   function Event() {
     _classCallCheck(this, Event);
 
-    if (__DEV__) {
+    if (false) {
       this.should.have.property('_toJS').which.is.a.Function;
       this.constructor.should.have.property('fromJS').which.is.a.Function;
       this.constructor.should.have.property('t').which.is.a.Function;
@@ -79,7 +77,7 @@ function (_Event) {
 
     _classCallCheck(this, Subscribe);
 
-    if (__DEV__) {
+    if (false) {
       path.should.be.a.String;
     }
 
@@ -127,7 +125,7 @@ function (_Event2) {
 
     _classCallCheck(this, Unsubscribe);
 
-    if (__DEV__) {
+    if (false) {
       path.should.be.a.String;
     }
 
@@ -176,7 +174,7 @@ function (_Event3) {
 
     _classCallCheck(this, Action);
 
-    if (__DEV__) {
+    if (false) {
       path.should.be.a.String;
       params.should.be.an.Object;
     }

@@ -11,9 +11,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import 'should';
-
-var __DEV__ = process.env.NODE_ENV === 'development';
-
 import { Patch } from 'remutable';
 
 var Event =
@@ -22,7 +19,7 @@ function () {
   function Event() {
     _classCallCheck(this, Event);
 
-    if (__DEV__) {
+    if (false) {
       this.should.have.property('_toJS').which.is.a.Function;
       this.constructor.should.have.property('fromJS').which.is.a.Function;
       this.constructor.should.have.property('t').which.is.a.Function;
@@ -82,7 +79,7 @@ function (_Event) {
 
     _classCallCheck(this, Update);
 
-    if (__DEV__) {
+    if (false) {
       path.should.be.a.String;
       patch.should.be.an.instanceOf(Patch);
     }
@@ -114,7 +111,7 @@ function (_Event) {
       var p = _ref2.p,
           u = _ref2.u;
 
-      if (__DEV__) {
+      if (false) {
         p.should.be.a.String;
         u.should.be.an.Object;
       }
@@ -141,7 +138,7 @@ function (_Event2) {
 
     _classCallCheck(this, Delete);
 
-    if (__DEV__) {
+    if (false) {
       path.should.be.a.String;
     }
 
@@ -169,7 +166,7 @@ function (_Event2) {
     value: function fromJS(_ref4) {
       var p = _ref4.p;
 
-      if (__DEV__) {
+      if (false) {
         p.should.be.a.String;
       }
 

@@ -4,7 +4,6 @@ import _includes from 'lodash/includes';
 import _clone from 'lodash/clone';
 import _size from 'lodash/size';
 import _uniqueId from 'lodash/uniqueId';
-const __DEV__ = process.env.NODE_ENV === 'development';
 import Remutable from 'remutable';
 import Lifespan from 'lifespan';
 import EventEmitter from 'nexus-events';
@@ -18,7 +17,7 @@ let _Server;
 // abstract
 class Link {
   constructor() {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       // ensure abstracts
       this.constructor.should.not.be.exactly(Link);
       // ensure virtual
@@ -35,7 +34,7 @@ class Link {
   // virtual
   // should forward the event to the associated client
   sendToClient(ev) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(_Server.Event);
     }
     throw new TypeError('Virtual method invocation');
@@ -43,7 +42,7 @@ class Link {
 
   // will be called by the server
   acceptFromServer(receiveFromClient) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       receiveFromClient.should.be.a.Function;
     }
     this.receiveFromClient = receiveFromClient;
@@ -51,7 +50,7 @@ class Link {
 
   // will be called by server
   receiveFromServer(ev) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(_Server.Event);
     }
     this.sendToClient(ev);
@@ -78,7 +77,7 @@ class Server extends EventEmitter {
 
   dispatchAction(path, params) {
     return Promise.try(() => {
-      if(__DEV__) {
+      if(process.env.NODE_ENV === 'development') {
         path.should.be.a.String;
         params.should.be.an.Object;
       }
@@ -101,7 +100,7 @@ class Server extends EventEmitter {
   }
 
   dispatchUpdate(path, patch) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       patch.should.be.an.instanceOf(Remutable.Patch);
     }
@@ -129,7 +128,7 @@ class Server extends EventEmitter {
   }
 
   subscribe(linkID, path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       linkID.should.be.a.String;
       path.should.be.a.String;
       this._links.should.have.property(linkID);
@@ -145,7 +144,7 @@ class Server extends EventEmitter {
   }
 
   unsubscribe(linkID, path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       linkID.should.be.a.String;
       path.should.be.a.String;
       this._links.should.have.property(linkID);
@@ -161,7 +160,7 @@ class Server extends EventEmitter {
   }
 
   acceptLink(link) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       link.should.be.an.instanceOf(Link);
     }
 
@@ -178,7 +177,7 @@ class Server extends EventEmitter {
   }
 
   receiveFromLink(linkID, ev) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       linkID.should.be.a.String;
       this._links.should.have.property(linkID);
       ev.should.be.an.instanceOf(Client.Event);
@@ -192,7 +191,7 @@ class Server extends EventEmitter {
     if(ev instanceof Client.Event.Action) {
       return this.dispatchAction(ev.path, ev.params);
     }
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       throw new TypeError(`Unknown Client.Event: ${ev}`);
     }
   }

@@ -1,6 +1,5 @@
 import 'should';
 import _bindAll from 'lodash/bindAll';
-const __DEV__ = process.env.NODE_ENV === 'development';
 import asap from 'asap';
 import EventEmitter from 'nexus-events';
 import Lifespan from 'lifespan';
@@ -13,7 +12,7 @@ let _Engine;
 
 class Producer {
   constructor(engine) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       engine.should.be.an.instanceOf(_Engine);
     }
     Object.assign(this, {
@@ -40,14 +39,14 @@ class Producer {
   }
 
   get(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     return this.working.get(path);
   }
 
   unset(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     return this.set(path, void 0);
@@ -62,7 +61,7 @@ class Producer {
 
 class Consumer {
   constructor(engine) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       engine.should.be.an.instanceOf(_Engine);
     }
     Object.assign(this, {
@@ -74,7 +73,7 @@ class Consumer {
       'onDelete',
     ]);
 
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this._onUpdateHandlers = 0;
       this._onDeleteHandlers = 0;
       // check that handlers are immediatly set
@@ -95,22 +94,22 @@ class Consumer {
   }
 
   onUpdate(fn) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       fn.should.be.a.Function;
     }
     this._engine.addListener(EVENTS.UPDATE, fn, this.lifespan);
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this._onUpdateHandlers = this._onUpdateHandlers + 1;
     }
     return this;
   }
 
   onDelete(fn) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       fn.should.be.a.Function;
     }
     this._engine.addListener(EVENTS.DELETE, fn, this.lifespan);
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this._onDeleteHandlers = this._onDeleteHandlers + 1;
     }
     return this;
@@ -134,7 +133,7 @@ class Engine extends EventEmitter {
     this.consumers = 0;
     this.producers = 0;
     this.lifespan.onRelease(() => {
-      if(__DEV__) {
+      if(process.env.NODE_ENV === 'development') {
         this.consumers.should.be.exactly(0);
         this.producers.should.be.exactly(0);
       }
@@ -159,7 +158,7 @@ class Engine extends EventEmitter {
   }
 
   apply(patch) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       patch.should.be.an.instanceOf(Patch);
     }
     this.remutable.apply(patch);

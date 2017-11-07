@@ -2,7 +2,6 @@ import 'should';
 import _each from 'lodash/each';
 import _isNumber from 'lodash/isNumber';
 import _mapValues from 'lodash/mapValues';
-const __DEV__ = process.env.NODE_ENV === 'development';
 import Immutable from 'immutable';
 import Remutable from 'remutable';
 const { Patch } = Remutable;
@@ -15,7 +14,7 @@ import { Event } from './Client.Event';
 // abstract
 class Client {
   constructor() {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       // ensure abstract
       this.constructor.should.not.be.exactly(Client);
       // ensure virtual
@@ -38,7 +37,7 @@ class Client {
 
   // virtual
   fetch(path, hash) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       (hash === null || _isNumber(hash)).should.be.true;
     }
@@ -47,7 +46,7 @@ class Client {
 
   // virtual
   sendToServer(ev) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(Event);
     }
     throw new TypeError('Virtual method invocation');
@@ -58,7 +57,7 @@ class Client {
   }
 
   getPrefetched(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       this.isPrefetching.should.be.true;
       this._prefetched.should.have.property(path);
@@ -68,14 +67,14 @@ class Client {
   }
 
   startPrefetching() {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this.isPrefetching.should.not.be.true;
     }
     this._prefetched = {};
   }
 
   stopPrefetching() {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this.isPrefetching.should.be.true;
     }
     const prefetched = this._prefetched;
@@ -83,7 +82,7 @@ class Client {
   }
 
   prefetch(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       this.isPrefetching.should.be.true;
     }
@@ -105,7 +104,7 @@ class Client {
   }
 
   getInjected(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     if(this.isInjecting && this._injected[path] !== void 0) {
@@ -115,7 +114,7 @@ class Client {
   }
 
   startInjecting(injected) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this.isInjecting.should.not.be.true;
       injected.should.be.an.Object;
     }
@@ -123,14 +122,14 @@ class Client {
   }
 
   stopInjecting() {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       this.isInjecting.should.be.true;
     }
     this._injected = null;
   }
 
   receiveFromServer(ev) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       ev.should.be.an.instanceOf(Server.Event);
     }
     if(ev instanceof Server.Event.Update) {
@@ -143,7 +142,7 @@ class Client {
   }
 
   findOrCreateStore(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     if(this._stores[path] === void 0) {
@@ -162,7 +161,7 @@ class Client {
   }
 
   deleteStore(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       this._stores.should.have.property(path);
       this._stores[path].consumers.should.be.exactly(0);
@@ -175,7 +174,7 @@ class Client {
 
   // returns a Store consumer
   getStore(path, lifespan) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       lifespan.should.be.an.instanceOf(Lifespan);
     }
@@ -191,7 +190,7 @@ class Client {
   }
 
   dispatchAction(path, params = {}) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       params.should.be.an.Object;
     }
@@ -210,7 +209,7 @@ class Client {
   }
 
   _update(path, patch) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       patch.should.be.an.instanceOf(Patch);
     }
@@ -235,7 +234,7 @@ class Client {
   }
 
   _delete(path) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
     }
     if(this._stores[path] === void 0) {
@@ -246,7 +245,7 @@ class Client {
   }
 
   _refetch(path, hash, { forceResync = false } = {}) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       (hash === null || _isNumber(hash)).should.be.true;
       this._stores.should.have.property(path);
@@ -258,7 +257,7 @@ class Client {
       if(this._stores[path] === void 0) {
         return;
       }
-      if(__DEV__) {
+      if(process.env.NODE_ENV === 'development') {
         this._stores[path].refetching.should.be.true;
       }
       this._stores[path].refetching = false;
@@ -267,7 +266,7 @@ class Client {
   }
 
   _upgrade(path, next, { forceResync = false } = {}) {
-    if(__DEV__) {
+    if(process.env.NODE_ENV === 'development') {
       path.should.be.a.String;
       (next instanceof Remutable || next instanceof Remutable.Consumer).should.be.true;
     }
