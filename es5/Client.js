@@ -1,22 +1,47 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "Event", {
+  enumerable: true,
+  get: function get() {
+    return _Client.Event;
+  }
+});
+exports.default = void 0;
+
+require("should");
+
+var _each2 = _interopRequireDefault(require("lodash/each"));
+
+var _isNumber2 = _interopRequireDefault(require("lodash/isNumber"));
+
+var _mapValues2 = _interopRequireDefault(require("lodash/mapValues"));
+
+var _immutable = _interopRequireDefault(require("immutable"));
+
+var _remutable = _interopRequireDefault(require("remutable"));
+
+var _lifespan = _interopRequireDefault(require("lifespan"));
+
+var _Store = _interopRequireDefault(require("./Store"));
+
+var _Server = _interopRequireDefault(require("./Server"));
+
+var _Client = require("./Client.Event");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import 'should';
-import _each from 'lodash/each';
-import _isNumber from 'lodash/isNumber';
-import _mapValues from 'lodash/mapValues';
-import Immutable from 'immutable';
-import Remutable from 'remutable';
-var Patch = Remutable.Patch;
-import Lifespan from 'lifespan';
-import Store from './Store'; // we just need this reference for typechecks
+var Patch = _remutable.default.Patch;
 
-import Server from './Server';
-import { Event } from './Client.Event'; // abstract
-
+// abstract
 var Client =
 /*#__PURE__*/
 function () {
@@ -34,7 +59,7 @@ function () {
       this.sendToServer.should.not.be.exactly(Client.prototype.sendToServer);
     }
 
-    this.lifespan = new Lifespan();
+    this.lifespan = new _lifespan.default();
     this._stores = {};
     this._refetching = {};
     this._injected = null;
@@ -53,7 +78,7 @@ function () {
     value: function fetch(path, hash) {
       if (false) {
         path.should.be.a.String;
-        (hash === null || _isNumber(hash)).should.be.true;
+        (hash === null || (0, _isNumber2.default)(hash)).should.be.true;
       }
 
       throw new TypeError('Virtual method invocation');
@@ -63,7 +88,7 @@ function () {
     key: "sendToServer",
     value: function sendToServer(ev) {
       if (false) {
-        ev.should.be.an.instanceOf(Event);
+        ev.should.be.an.instanceOf(_Client.Event);
       }
 
       throw new TypeError('Virtual method invocation');
@@ -99,7 +124,7 @@ function () {
       }
 
       var prefetched = this._prefetched;
-      return _mapValues(prefetched, function (_ref) {
+      return (0, _mapValues2.default)(prefetched, function (_ref) {
         var head = _ref.head;
         return head ? head.toJS() : void 0;
       });
@@ -149,8 +174,8 @@ function () {
         injected.should.be.an.Object;
       }
 
-      this._injected = _mapValues(injected, function (js) {
-        return new Immutable.Map(js);
+      this._injected = (0, _mapValues2.default)(injected, function (js) {
+        return new _immutable.default.Map(js);
       });
     }
   }, {
@@ -166,14 +191,14 @@ function () {
     key: "receiveFromServer",
     value: function receiveFromServer(ev) {
       if (false) {
-        ev.should.be.an.instanceOf(Server.Event);
+        ev.should.be.an.instanceOf(_Server.default.Event);
       }
 
-      if (ev instanceof Server.Event.Update) {
+      if (ev instanceof _Server.default.Event.Update) {
         return this._update(ev.path, ev.patch);
       }
 
-      if (ev instanceof Server.Event.Delete) {
+      if (ev instanceof _Server.default.Event.Delete) {
         return this._delete(ev.path);
       }
 
@@ -187,10 +212,10 @@ function () {
       }
 
       if (this._stores[path] === void 0) {
-        this.sendToServer(new Event.Subscribe({
+        this.sendToServer(new _Client.Event.Subscribe({
           path: path
         }));
-        var engine = new Store.Engine(this.getInjected(path) || void 0);
+        var engine = new _Store.default.Engine(this.getInjected(path) || void 0);
         this._stores[path] = {
           engine: engine,
           producer: engine.createProducer(),
@@ -219,7 +244,7 @@ function () {
 
       this._stores[path].engine.lifespan.release();
 
-      this.sendToServer(new Event.Unsubscribe({
+      this.sendToServer(new _Client.Event.Unsubscribe({
         path: path
       }));
       delete this._stores[path];
@@ -232,7 +257,7 @@ function () {
 
       if (false) {
         path.should.be.a.String;
-        lifespan.should.be.an.instanceOf(Lifespan);
+        lifespan.should.be.an.instanceOf(_lifespan.default);
       }
 
       var _findOrCreateStore = this.findOrCreateStore(path),
@@ -257,7 +282,7 @@ function () {
         params.should.be.an.Object;
       }
 
-      this.sendToServer(new Event.Action({
+      this.sendToServer(new _Client.Event.Action({
         path: path,
         params: params
       }));
@@ -340,7 +365,7 @@ function () {
 
       if (false) {
         path.should.be.a.String;
-        (hash === null || _isNumber(hash)).should.be.true;
+        (hash === null || (0, _isNumber2.default)(hash)).should.be.true;
 
         this._stores.should.have.property(path);
       }
@@ -373,7 +398,7 @@ function () {
 
       if (false) {
         path.should.be.a.String;
-        (next instanceof Remutable || next instanceof Remutable.Consumer).should.be.true;
+        (next instanceof _remutable.default || next instanceof _remutable.default.Consumer).should.be.true;
       } // if we are not interested anymore, then dismiss
 
 
@@ -400,14 +425,13 @@ function () {
 
       var version = squash.to.v; // clean old patches
 
-      _each(patches, function (_ref5, source) {
+      (0, _each2.default)(patches, function (_ref5, source) {
         var to = _ref5.to;
 
         if (to.v <= version) {
           delete patches[source];
         }
       });
-
       producer.apply(squash);
     }
   }, {
@@ -426,7 +450,7 @@ function () {
 }();
 
 Object.assign(Client, {
-  Event: Event
+  Event: _Client.Event
 });
-export { Event };
-export default Client;
+var _default = Client;
+exports.default = _default;

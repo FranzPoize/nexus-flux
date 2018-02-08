@@ -70,9 +70,9 @@ class Server extends EventEmitter {
       });
       this._links = null;
       this._subscriptions = null;
-	});
-	this.debugPath = debugPath;
-	this.logStore = logStore;
+    });
+    this.debugPath = debugPath;
+    this.logStore = logStore;
   }
 
   dispatchAction(path, params) {
@@ -199,7 +199,7 @@ class Server extends EventEmitter {
 
 _Server = Server;
 
-Object.assign( Server, { Event, Link });
+Object.assign(Server, { Event, Link });
 
 export { Event, Link };
 export default Server;

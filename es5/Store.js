@@ -1,6 +1,27 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+require("should");
+
+var _bindAll2 = _interopRequireDefault(require("lodash/bindAll"));
+
+var _asap = _interopRequireDefault(require("asap"));
+
+var _nexusEvents = _interopRequireDefault(require("nexus-events"));
+
+var _lifespan = _interopRequireDefault(require("lifespan"));
+
+var _remutable = _interopRequireDefault(require("remutable"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
@@ -10,13 +31,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import 'should';
-import _bindAll from 'lodash/bindAll';
-import asap from 'asap';
-import EventEmitter from 'nexus-events';
-import Lifespan from 'lifespan';
-import Remutable from 'remutable';
-var Patch = Remutable.Patch;
+var Patch = _remutable.default.Patch;
 var EVENTS = {
   UPDATE: 'c',
   DELETE: 'd'
@@ -38,11 +53,9 @@ function () {
 
     Object.assign(this, {
       _engine: engine,
-      lifespan: new Lifespan()
+      lifespan: new _lifespan.default()
     });
-
-    _bindAll(this, ['get', 'unset', 'set']); // proxy getters to engine.remutableProducers
-
+    (0, _bindAll2.default)(this, ['get', 'unset', 'set']); // proxy getters to engine.remutableProducers
 
     ['head', 'working', 'hash', 'version'].forEach(function (p) {
       return Object.defineProperty(_this, p, {
@@ -107,16 +120,15 @@ function () {
 
     Object.assign(this, {
       _engine: engine,
-      lifespan: new Lifespan()
+      lifespan: new _lifespan.default()
     });
-
-    _bindAll(this, ['onUpdate', 'onDelete']);
+    (0, _bindAll2.default)(this, ['onUpdate', 'onDelete']);
 
     if (false) {
       this._onUpdateHandlers = 0;
       this._onDeleteHandlers = 0; // check that handlers are immediatly set
 
-      asap(function () {
+      (0, _asap.default)(function () {
         try {
           _this2._onUpdateHandlers.should.be.above(0);
 
@@ -181,11 +193,9 @@ function (_EventEmitter) {
     _classCallCheck(this, Engine);
 
     _this3 = _possibleConstructorReturn(this, (Engine.__proto__ || Object.getPrototypeOf(Engine)).call(this));
-    _this3.lifespan = new Lifespan();
-    _this3.remutable = new Remutable(data);
-
-    _bindAll(_this3, ['createProducer', 'createConsumer', 'apply', 'commit', 'delete']);
-
+    _this3.lifespan = new _lifespan.default();
+    _this3.remutable = new _remutable.default(data);
+    (0, _bindAll2.default)(_this3, ['createProducer', 'createConsumer', 'apply', 'commit', 'delete']);
     _this3.remutableProducer = _this3.remutable.createProducer();
     _this3.remutableConsumer = _this3.remutable.createConsumer();
     _this3.consumers = 0;
@@ -254,11 +264,12 @@ function (_EventEmitter) {
   }]);
 
   return Engine;
-}(EventEmitter);
+}(_nexusEvents.default);
 
 _Engine = Engine;
-export default {
+var _default = {
   Consumer: Consumer,
   Producer: Producer,
   Engine: Engine
 };
+exports.default = _default;

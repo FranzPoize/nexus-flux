@@ -1,3 +1,22 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+require("should");
+
+var _each2 = _interopRequireDefault(require("lodash/each"));
+
+var _isObject2 = _interopRequireDefault(require("lodash/isObject"));
+
+var _ = require("../");
+
+var _remutable = _interopRequireDefault(require("remutable"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -8,17 +27,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import 'should';
-import _each from 'lodash/each';
-import _isObject from 'lodash/isObject';
-import { Client, Server } from '../';
-var Link = Server.Link;
-import Remutable from 'remutable'; // constants for the communication 'protocol'/convention
-
+var Link = _.Server.Link;
+// constants for the communication 'protocol'/convention
 var FETCH = 'f';
 var PUBLISH = 'p';
 var EVENT = 'e'; // this is a just a disambiguation salt; this is by no mean a
@@ -55,7 +69,7 @@ function (_Client) {
     _this._worker.addEventListener('message', _this.receiveFromWorker);
 
     _this.lifespan.onRelease(function () {
-      _each(_this._fetching, function (_ref) {
+      (0, _each2.default)(_this._fetching, function (_ref) {
         var reject = _ref.reject;
         return reject(new Error('Client released'));
       });
@@ -97,7 +111,7 @@ function (_Client) {
     key: "sendToServer",
     value: function sendToServer(ev) {
       if (false) {
-        ev.should.be.an.instanceOf(Client.Event);
+        ev.should.be.an.instanceOf(_.Client.Event);
       }
 
       this._worker.postMessage(_defineProperty({}, this._salt, {
@@ -118,7 +132,7 @@ function (_Client) {
         if (j === null) {
           this._fetching[path].reject(new Error("Couldn't fetch store"));
         } else {
-          this._fetching[path].resolve(Remutable.fromJS(j).createConsumer());
+          this._fetching[path].resolve(_remutable.default.fromJS(j).createConsumer());
         }
 
         delete this._fetching[path];
@@ -129,10 +143,10 @@ function (_Client) {
   }, {
     key: "_receiveEvent",
     value: function _receiveEvent(j) {
-      var ev = Server.Event.fromJS(j);
+      var ev = _.Server.Event.fromJS(j);
 
       if (false) {
-        ev.should.be.an.instanceOf(Server.Event);
+        ev.should.be.an.instanceOf(_.Server.Event);
       }
 
       return this.receiveFromServer(ev);
@@ -140,7 +154,7 @@ function (_Client) {
   }, {
     key: "receiveFromWorker",
     value: function receiveFromWorker(message) {
-      if (_isObject(message) && message[this._salt] !== void 0) {
+      if ((0, _isObject2.default)(message) && message[this._salt] !== void 0) {
         var _message$_salt = message[this._salt],
             t = _message$_salt.t,
             j = _message$_salt.j;
@@ -159,7 +173,7 @@ function (_Client) {
   }]);
 
   return WorkerClient;
-}(Client);
+}(_.Client);
 /* jshint browser:false */
 
 /* jshint worker:true */
@@ -206,7 +220,7 @@ function (_Link) {
     key: "sendToClient",
     value: function sendToClient(ev) {
       if (false) {
-        ev.should.be.an.instanceOf(Server.Event);
+        ev.should.be.an.instanceOf(_.Server.Event);
       }
 
       this._self.postMessage(_defineProperty({}, this._salt, {
@@ -217,10 +231,10 @@ function (_Link) {
   }, {
     key: "_receivePublish",
     value: function _receivePublish(j) {
-      var ev = Client.Event.fromJS(j);
+      var ev = _.Client.Event.fromJS(j);
 
       if (false) {
-        ev.should.be.an.instanceOf(Client.Event);
+        ev.should.be.an.instanceOf(_.Client.Event);
         return this.receiveFromClient(ev);
       }
 
@@ -246,7 +260,7 @@ function (_Link) {
   }, {
     key: "receiveFromWorker",
     value: function receiveFromWorker(message) {
-      if (_isObject(message) && message[this._salt] !== void 0) {
+      if ((0, _isObject2.default)(message) && message[this._salt] !== void 0) {
         var _message$_salt2 = message[this._salt],
             t = _message$_salt2.t,
             j = _message$_salt2.j;
@@ -308,11 +322,12 @@ function (_Server) {
   }
 
   return WorkerServer;
-}(Server);
+}(_.Server);
 /* jshint worker:false */
 
 
-export default {
+var _default = {
   Client: WorkerClient,
   Server: WorkerServer
 };
+exports.default = _default;

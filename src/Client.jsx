@@ -92,8 +92,8 @@ class Client {
         head: null,
       };
       prefetched.promise = this.fetch(path, null)
-      .then(({ head }) => prefetched.head = head)
-      .catch(() => prefetched.head = null);
+        .then(({ head }) => prefetched.head = head)
+        .catch(() => prefetched.head = null);
       this._prefetched[path] = prefetched;
     }
     return this._prefetched[path];
@@ -295,7 +295,7 @@ class Client {
     producer.apply(squash);
   }
 }
-Object.assign( Client, { Event });
+Object.assign(Client, { Event });
 
 export { Event };
 export default Client;

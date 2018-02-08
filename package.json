@@ -40,7 +40,7 @@
     "babel-plugin-uglify": "^1.0.2",
     "immutable": "^3.7.3",
     "lifespan": "franzpoize/lifespan#master",
-    "lodash": "^4.14.0",
+    "lodash": "~4.14.0",
     "nexus-events": "franzpoize/nexus-events#master",
     "remutable": "franzpoize/remutable#master",
     "sha256": "^0.2.0",

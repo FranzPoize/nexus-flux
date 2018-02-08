@@ -1,6 +1,45 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "Event", {
+  enumerable: true,
+  get: function get() {
+    return _Server2.Event;
+  }
+});
+exports.default = exports.Link = void 0;
+
+require("should");
+
+var _each2 = _interopRequireDefault(require("lodash/each"));
+
+var _includes2 = _interopRequireDefault(require("lodash/includes"));
+
+var _clone2 = _interopRequireDefault(require("lodash/clone"));
+
+var _size2 = _interopRequireDefault(require("lodash/size"));
+
+var _uniqueId2 = _interopRequireDefault(require("lodash/uniqueId"));
+
+var _remutable = _interopRequireDefault(require("remutable"));
+
+var _lifespan = _interopRequireDefault(require("lifespan"));
+
+var _nexusEvents = _interopRequireDefault(require("nexus-events"));
+
+var _Client = _interopRequireDefault(require("./Client"));
+
+var _Server2 = require("./Server.Event");
+
+var _bluebird = _interopRequireDefault(require("bluebird"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
@@ -9,20 +48,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-import 'should';
-import _each from 'lodash/each';
-import _includes from 'lodash/includes';
-import _clone from 'lodash/clone';
-import _size from 'lodash/size';
-import _uniqueId from 'lodash/uniqueId';
-import Remutable from 'remutable';
-import Lifespan from 'lifespan';
-import EventEmitter from 'nexus-events'; // we just need this reference for typechecks
-
-import Client from './Client';
-import { Event } from './Server.Event';
-import Promise from 'bluebird';
 
 var _Server; // abstract
 
@@ -42,7 +67,7 @@ function () {
       this.sendToClient.should.not.be.exactly(Link.prototype.sendToClient);
     }
 
-    this.lifespan = new Lifespan(); // will be set by the server; should be called when received client events, to forward them to the server
+    this.lifespan = new _lifespan.default(); // will be set by the server; should be called when received client events, to forward them to the server
 
     this.receiveFromClient = null;
     this.lifespan.onRelease(function () {
@@ -86,6 +111,8 @@ function () {
   return Link;
 }();
 
+exports.Link = Link;
+
 var Server =
 /*#__PURE__*/
 function (_EventEmitter) {
@@ -100,22 +127,19 @@ function (_EventEmitter) {
     _classCallCheck(this, Server);
 
     _this2 = _possibleConstructorReturn(this, (Server.__proto__ || Object.getPrototypeOf(Server)).call(this));
-    _this2.lifespan = new Lifespan();
+    _this2.lifespan = new _lifespan.default();
     _this2._links = {};
     _this2._subscriptions = {};
 
     _this2.lifespan.onRelease(function () {
-      _each(_this2._links, function (_ref2, linkID) {
+      (0, _each2.default)(_this2._links, function (_ref2, linkID) {
         var link = _ref2.link,
             subscriptions = _ref2.subscriptions;
-
-        _each(subscriptions, function (path) {
+        (0, _each2.default)(subscriptions, function (path) {
           return _this2.unsubscribe(linkID, path);
         });
-
         link.lifespan.release();
       });
-
       _this2._links = null;
       _this2._subscriptions = null;
     });
@@ -130,15 +154,14 @@ function (_EventEmitter) {
     value: function dispatchAction(path, params) {
       var _this3 = this;
 
-      return Promise.try(function () {
+      return _bluebird.default.try(function () {
         if (false) {
           path.should.be.a.String;
           params.should.be.an.Object;
         }
 
-        if (_this3.logStore && !_includes(_this3.debugPath, path)) {
-          var patchArray = _clone(_this3.logStore.get('patchArray'));
-
+        if (_this3.logStore && !(0, _includes2.default)(_this3.debugPath, path)) {
+          var patchArray = (0, _clone2.default)(_this3.logStore.get('patchArray'));
           patchArray.push({
             path: path,
             params: params,
@@ -151,8 +174,7 @@ function (_EventEmitter) {
             path: 'logStore',
             patch: logPatch
           });
-
-          _each(_this3._subscriptions.logStore, function (link) {
+          (0, _each2.default)(_this3._subscriptions.logStore, function (link) {
             link.receiveFromServer(logEv);
           });
         }
@@ -170,12 +192,11 @@ function (_EventEmitter) {
     value: function dispatchUpdate(path, patch) {
       if (false) {
         path.should.be.a.String;
-        patch.should.be.an.instanceOf(Remutable.Patch);
+        patch.should.be.an.instanceOf(_remutable.default.Patch);
       }
 
-      if (this.logStore && !_includes(this.debugPath, path)) {
-        var patchArray = _clone(this.logStore.get('patchArray'));
-
+      if (this.logStore && !(0, _includes2.default)(this.debugPath, path)) {
+        var patchArray = (0, _clone2.default)(this.logStore.get('patchArray'));
         patchArray.push({
           path: path,
           patch: patch,
@@ -186,8 +207,7 @@ function (_EventEmitter) {
           path: 'logStore',
           patch: logPatch
         });
-
-        _each(this._subscriptions.logStore, function (link) {
+        (0, _each2.default)(this._subscriptions.logStore, function (link) {
           link.receiveFromServer(logEv);
         });
       }
@@ -197,8 +217,7 @@ function (_EventEmitter) {
           path: path,
           patch: patch
         });
-
-        _each(this._subscriptions[path], function (link) {
+        (0, _each2.default)(this._subscriptions[path], function (link) {
           link.receiveFromServer(ev);
         });
       }
@@ -246,7 +265,7 @@ function (_EventEmitter) {
       delete this._links[linkID].subscriptions[path];
       delete this._subscriptions[path][linkID];
 
-      if (_size(this._subscriptions[path]) === 0) {
+      if ((0, _size2.default)(this._subscriptions[path]) === 0) {
         delete this._subscriptions[path];
       }
     }
@@ -259,8 +278,7 @@ function (_EventEmitter) {
         link.should.be.an.instanceOf(Link);
       }
 
-      var linkID = _uniqueId();
-
+      var linkID = (0, _uniqueId2.default)();
       this._links[linkID] = {
         link: link,
         subscriptions: {}
@@ -269,10 +287,9 @@ function (_EventEmitter) {
         return _this4.receiveFromLink(linkID, ev);
       });
       link.lifespan.onRelease(function () {
-        _each(_this4._links[linkID].subscriptions, function (path) {
+        (0, _each2.default)(_this4._links[linkID].subscriptions, function (path) {
           return _this4.unsubscribe(linkID, path);
         });
-
         delete _this4._links[linkID];
       });
     }
@@ -284,18 +301,18 @@ function (_EventEmitter) {
 
         this._links.should.have.property(linkID);
 
-        ev.should.be.an.instanceOf(Client.Event);
+        ev.should.be.an.instanceOf(_Client.default.Event);
       }
 
-      if (ev instanceof Client.Event.Subscribe) {
+      if (ev instanceof _Client.default.Event.Subscribe) {
         return this.subscribe(linkID, ev.path);
       }
 
-      if (ev instanceof Client.Event.Unsubscribe) {
+      if (ev instanceof _Client.default.Event.Unsubscribe) {
         return this.unsubscribe(linkID, ev.path);
       }
 
-      if (ev instanceof Client.Event.Action) {
+      if (ev instanceof _Client.default.Event.Action) {
         return this.dispatchAction(ev.path, ev.params);
       }
 
@@ -306,12 +323,12 @@ function (_EventEmitter) {
   }]);
 
   return Server;
-}(EventEmitter);
+}(_nexusEvents.default);
 
 _Server = Server;
 Object.assign(Server, {
-  Event: Event,
+  Event: _Server2.Event,
   Link: Link
 });
-export { Event, Link };
-export default Server;
+var _default = Server;
+exports.default = _default;

@@ -1,19 +1,29 @@
+"use strict";
+
+var _lodash = _interopRequireDefault(require("lodash"));
+
+require("should");
+
+var _lifespan = _interopRequireDefault(require("lifespan"));
+
+var _remutable = _interopRequireDefault(require("remutable"));
+
+var _nexusFlux = require("../../dist/nexus-flux.js");
+
+var _sha = _interopRequireDefault(require("sha256"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var _global = global,
     describe = _global.describe,
     it = _global.it;
-import _ from 'lodash';
-import 'should';
-import Lifespan from 'lifespan';
-import Remutable from 'remutable';
-import { Client, Server } from '../../dist/nexus-flux.js';
-import hash from 'sha256';
 describe('Nexus Flux', function test() {
   this.timeout(12000); // Stub tests. Will refactor later.
 
   it('should not throw', function (done) {
     var stores = {};
-    var server = new Server(stores);
-    var client = new Client(server);
+    var server = new _nexusFlux.Server(stores);
+    var client = new _nexusFlux.Client(server);
     server.lifespan.onRelease(function () {
       return console.log('server released');
     });
@@ -22,12 +32,12 @@ describe('Nexus Flux', function test() {
     });
     setTimeout(done, 11000); // server main
 
-    _.defer(function () {
+    _lodash.default.defer(function () {
       // initialize several stores
-      var clock = stores['/clock'] = new Remutable({
+      var clock = stores['/clock'] = new _remutable.default({
         date: Date.now()
       });
-      var todoList = stores['/todoList'] = new Remutable({}); // update clock every 500ms
+      var todoList = stores['/todoList'] = new _remutable.default({}); // update clock every 500ms
 
       server.lifespan.setInterval(function () {
         server.dispatchUpdate('/clock', clock.set('date', Date.now()).commit());
@@ -40,7 +50,7 @@ describe('Nexus Flux', function test() {
           var item = {
             name: name,
             description: description,
-            ownerHash: hash(ownerKey)
+            ownerHash: (0, _sha.default)(ownerKey)
           };
 
           if (todoList.get(name) !== void 0) {
@@ -60,7 +70,7 @@ describe('Nexus Flux', function test() {
 
           var ownerHash = item.ownerHash;
 
-          if (hash(ownerKey) !== ownerHash) {
+          if ((0, _sha.default)(ownerKey) !== ownerHash) {
             return;
           }
 
@@ -80,8 +90,8 @@ describe('Nexus Flux', function test() {
     }); // client main
 
 
-    _.defer(function () {
-      var ownerKey = hash("".concat(Date.now(), ":").concat(_.random())); // subscribe to a store
+    _lodash.default.defer(function () {
+      var ownerKey = (0, _sha.default)("".concat(Date.now(), ":").concat(_lodash.default.random())); // subscribe to a store
 
       client.getStore('/clock', client.lifespan) // every time its updated (including when its first fetched), display the modified value (it is an Immutable.Map)
       .onUpdate(function (_ref4) {
@@ -92,7 +102,7 @@ describe('Nexus Flux', function test() {
         console.log('clock deleted');
       }); // this store subscribers has a limited lifespan (eg. a React components' own lifespan)
 
-      var todoListLifespan = new Lifespan();
+      var todoListLifespan = new _lifespan.default();
       var todoList = client.getStore('/todoList', todoListLifespan) // when its updated, we can access not only the up-to-date head, but also the underlying patch object,
       .onUpdate(function (_ref5, patch) {
         var head = _ref5.head;

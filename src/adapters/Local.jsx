@@ -65,7 +65,7 @@ class LocalServer extends Server {
     }
     super(debugInfo);
     this.stores = stores;
-	this.lifespan.onRelease(() => this.stores = null);
+    this.lifespan.onRelease(() => this.stores = null);
   }
 }
 
